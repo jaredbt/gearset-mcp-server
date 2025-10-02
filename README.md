@@ -133,7 +133,7 @@ Get deployment audit data from the Audit API.
 - `OptionalParameters` (array, optional): Additional data to include
 
 #### `get_ci_job_runs_audit`
-Get CI job runs audit data (now uses async operations).
+Get all CI job runs data using the Reporting API (async operation).
 - `jobId` (string): The CI job ID to get runs for
 - `StartDate` (string): Start date/time in UTC format
 - `EndDate` (string): End date/time in UTC format

@@ -303,37 +303,69 @@ export interface AuditEvent {
   Id: string;
   EventType: string;
   Timestamp: string;
-  UserId: string;
-  UserEmail: string;
+  UserId?: string;
+  UserEmail?: string;
   ResourceType: string;
   ResourceId: string;
   Details: Record<string, any>;
 }
 
-export interface DeploymentAudit {
+// Aligns with the Audit API spec's DeploymentAuditEntry
+export interface DeploymentAuditEntry {
   DeploymentId: string;
-  UserId: string;
-  UserEmail: string;
-  DeploymentStartTime: string;
-  DeploymentEndTime?: string;
-  Status: 'Succeeded' | 'Failed' | 'Cancelled';
-  SourceOrgId: string;
-  TargetOrgId: string;
-  TargetMetadataLocationType: 'Production' | 'Sandbox' | 'Developer';
-  Components: DeploymentComponent[];
-  WorkItems?: WorkItem[];
-}
-
-export interface DeploymentComponent {
-  ComponentType: string;
-  ComponentName: string;
-  Action: 'Added' | 'Changed' | 'Deleted';
-}
-
-export interface WorkItem {
-  TicketId: string;
-  TicketType: 'Jira' | 'AzureDevOps' | 'Asana';
-  TicketUrl?: string;
+  Status: 'Successful' | 'Failed' | 'PartiallySuccessful';
+  Name: string;
+  Owner: string;
+  TriggeredBy: string;
+  Date: string; // ISO date-time
+  FriendlyName: string;
+  SourceUsername: string;
+  SourceMetadataLocationType:
+    | 'Developer'
+    | 'Sandbox'
+    | 'Production'
+    | 'ScratchOrg'
+    | 'OnDisk'
+    | 'GitHubBranch'
+    | 'GitHubEnterpriseBranch'
+    | 'GitLabBranch'
+    | 'GitLabSelfManagedBranch'
+    | 'BitbucketBranch'
+    | 'BitbucketServerBranch'
+    | 'VstsGitBranch'
+    | 'AzureDevOpsGitBranch'
+    | 'AzureDevOpsServerBranch'
+    | 'GitBranch'
+    | 'AwsCodeCommitBranch'
+    | 'Other'
+    | 'ExactTarget';
+  TargetUsername: string;
+  TargetMetadataLocationType:
+    | 'Developer'
+    | 'Sandbox'
+    | 'Production'
+    | 'ScratchOrg'
+    | 'OnDisk'
+    | 'GitHubBranch'
+    | 'GitHubEnterpriseBranch'
+    | 'GitLabBranch'
+    | 'GitLabSelfManagedBranch'
+    | 'BitbucketBranch'
+    | 'BitbucketServerBranch'
+    | 'VstsGitBranch'
+    | 'AzureDevOpsGitBranch'
+    | 'AzureDevOpsServerBranch'
+    | 'GitBranch'
+    | 'AwsCodeCommitBranch'
+    | 'Other'
+    | 'ExactTarget';
+  DeploymentType: 'Standard' | 'Rollback' | 'DeployToTarget' | 'ContinuousIntegration' | 'Other';
+  DeploymentDifferences: DeploymentDifferenceResponse[];
+  SalesforceFinalDeploymentId?: string | null;
+  JiraTickets?: JiraTicketReferenceResponseEntry[] | null;
+  AsanaTasks?: AsanaTaskResponseEntry[] | null;
+  AzureDevOpsWorkItems?: AzureDevOpsWorkItemResponseEntry[] | null;
+  AnonymousApexExecutions?: AnonymousApexExecutionAuditResponseItem[] | null;
 }
 
 export interface DeploymentAuditQuery {
@@ -348,6 +380,42 @@ export interface AnonymousApexQuery {
   EndDate: string;
   OrgUsername?: string;
   Username?: string;
+}
+
+// Additional interfaces referenced by Audit API spec
+export interface DeploymentDifferenceResponse {
+  DifferenceType: string;
+  ObjectType: string;
+  DisplayName: string;
+  ModifiedBy: string;
+  ModifiedOn: string;
+}
+
+export interface JiraTicketReferenceResponseEntry {
+  TicketKey: string;
+  TicketUrl?: string;
+}
+
+export interface AsanaTaskResponseEntry {
+  TaskName: string;
+  TaskUrl: string;
+}
+
+export interface AzureDevOpsWorkItemResponseEntry {
+  ItemReference: string;
+  ItemUrl: string;
+}
+
+export interface AnonymousApexExecutionAuditResponseItem {
+  SalesforceUsername: string;
+  SalesforceOrgType: string;
+  ApexCode: string;
+  Description?: string;
+  Timestamp: string;
+  ExecutedBy: string;
+  Result: string;
+  DebugLog?: string;
+  DeploymentExecutionType: string;
 }
 
 export class GearsetClient {
@@ -817,7 +885,7 @@ export class GearsetClient {
   /**
    * Get deployment audit data from the Audit API
    */
-  async getDeploymentAudit(query: DeploymentAuditQuery): Promise<DeploymentAudit[]> {
+  async getDeploymentAudit(query: DeploymentAuditQuery): Promise<DeploymentAuditEntry[]> {
     try {
       const params: Record<string, any> = {
         StartDate: query.StartDate, // Capital S as per API spec
@@ -828,7 +896,7 @@ export class GearsetClient {
         params.OptionalParameters = query.OptionalParameters;
       }
       
-      const response = await this.auditClient.get<{Deployments: DeploymentAudit[]}>(
+      const response = await this.auditClient.get<{ Deployments: DeploymentAuditEntry[] }>(
         '/deployments',
         { params }
       );
@@ -841,18 +909,18 @@ export class GearsetClient {
   /**
    * Get CI job runs audit data from the Audit API
    */
-  async getCIJobRunsAudit(jobId: string, query: CIJobRunsQuery): Promise<any[]> {
+  async getCIJobRunsAudit(jobId: string, query: CIJobRunsQuery): Promise<ContinuousIntegrationRunObject[]> {
     try {
       const params: Record<string, any> = {
         StartDate: query.StartDate,
         EndDate: query.EndDate
       };
       
-      const response = await this.auditClient.get<any>(
+      const response = await this.auditClient.get<ContinuousIntegrationJobsResponse>(
         `/continuous-integration/job/${jobId}/runs`,
         { params }
       );
-      return response.data;
+      return response.data.Runs;
     } catch (error) {
       throw new Error(`Failed to get CI job runs audit data: ${error}`);
     }
@@ -891,43 +959,73 @@ export class GearsetClient {
   async getAuditEvents(resourceId?: string, limit?: number): Promise<AuditEvent[]> {
     try {
       // For backward compatibility, we'll call the deployment audit endpoint
-      // and transform the data into the expected format
+      // and transform the data into a generic audit events format
       const now = new Date();
-      const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
-      
+      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
       const query: DeploymentAuditQuery = {
         StartDate: thirtyDaysAgo.toISOString(),
-        EndDate: now.toISOString()
+        EndDate: now.toISOString(),
       };
-      
+
       const deployments = await this.getDeploymentAudit(query);
-      
+
       // Transform deployment audit data into generic audit events
-      const events: AuditEvent[] = deployments.map(deployment => ({
+      let events: AuditEvent[] = deployments.map((deployment) => ({
         Id: deployment.DeploymentId,
         EventType: 'DEPLOYMENT',
-        Timestamp: deployment.DeploymentStartTime,
-        UserId: deployment.UserId,
-        UserEmail: deployment.UserEmail,
+        Timestamp: deployment.Date,
         ResourceType: 'DEPLOYMENT',
         ResourceId: deployment.DeploymentId,
         Details: {
           status: deployment.Status,
-          sourceOrgId: deployment.SourceOrgId,
-          targetOrgId: deployment.TargetOrgId,
+          name: deployment.Name,
+          friendlyName: deployment.FriendlyName,
+          owner: deployment.Owner,
+          triggeredBy: deployment.TriggeredBy,
+          sourceUsername: deployment.SourceUsername,
+          sourceType: deployment.SourceMetadataLocationType,
+          targetUsername: deployment.TargetUsername,
           targetType: deployment.TargetMetadataLocationType,
-          componentCount: deployment.Components?.length || 0,
-          workItems: deployment.WorkItems
-        }
+          deploymentType: deployment.DeploymentType,
+          differencesCount: Array.isArray(deployment.DeploymentDifferences)
+            ? deployment.DeploymentDifferences.length
+            : 0,
+        },
       }));
-      
+
+      // Apply resourceId filter if provided
+      if (resourceId) {
+        events = events.filter((e) => e.ResourceId === resourceId);
+      }
+
       if (limit) {
         return events.slice(0, limit);
       }
-      
+
       return events;
     } catch (error) {
       throw new Error(`Failed to get audit events: ${error}`);
+    }
+  }
+
+  /**
+   * Get pipeline edit history audit data from the Audit API
+   */
+  async getPipelineEditHistory(pipelineId: string, query: CIJobRunsQuery): Promise<any[]> {
+    try {
+      const params: Record<string, any> = {
+        StartDate: query.StartDate,
+        EndDate: query.EndDate
+      };
+      
+      const response = await this.auditClient.get<{ History: any[] }>(
+        `/pipeline/${pipelineId}/edit-history`,
+        { params }
+      );
+      return response.data.History || [];
+    } catch (error) {
+      throw new Error(`Failed to get pipeline edit history: ${error}`);
     }
   }
 

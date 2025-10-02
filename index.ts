@@ -103,20 +103,32 @@ const GetTimeToRestoreSchema = z.object({
 });
 
 const GetDeploymentAuditSchema = z.object({
-  StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
-  EndDate: z.string().describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
+  StartDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'StartDate must be a valid ISO 8601 date string' }).describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
+  EndDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'EndDate must be a valid ISO 8601 date string' }).describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
   OptionalParameters: z.array(z.enum(['JiraTickets', 'AsanaTasks', 'AzureDevOpsWorkItems', 'AnonymousApexExecutions'])).optional().describe('Optional data to include in response'),
 });
 
 const GetCIJobRunsAuditSchema = z.object({
   jobId: z.string().describe('The CI job ID to get runs for'),
-  StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
-  EndDate: z.string().describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
+  StartDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'StartDate must be a valid ISO 8601 date string' }).describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
+  EndDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'EndDate must be a valid ISO 8601 date string' }).describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
 });
 
 const GetAnonymousApexAuditSchema = z.object({
-  StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
-  EndDate: z.string().describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
+  StartDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'StartDate must be a valid ISO 8601 date string' }).describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
+  EndDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'EndDate must be a valid ISO 8601 date string' }).describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
   OrgUsername: z.string().optional().describe('The Salesforce org username to filter by'),
   Username: z.string().optional().describe('The Gearset username to filter by'),
 });
@@ -180,6 +192,26 @@ const UpdateExternalTestRunSchema = z.object({
   endTimeUtc: z.string().optional().describe('The optional UTC end time of the test run'),
 });
 
+const GetPipelineEditHistorySchema = z.object({
+  pipelineId: z.string().describe('The pipeline ID to get edit history for'),
+  StartDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'StartDate must be a valid ISO 8601 date string' }).describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
+  EndDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'EndDate must be a valid ISO 8601 date string' }).describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
+});
+
+const GetManualCIJobRunsSchema = z.object({
+  jobId: z.string().describe('The CI job ID to get manually triggered runs for'),
+  StartDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'StartDate must be a valid ISO 8601 date string' }).describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
+  EndDate: z.string().refine((date) => {
+    return !isNaN(Date.parse(date));
+  }, { message: 'EndDate must be a valid ISO 8601 date string' }).describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
+});
+
 // Tool definitions
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
@@ -231,7 +263,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_ci_job_runs_audit',
-        description: 'Get CI job runs audit data from the Audit API',
+        description: 'Get all CI job runs data using the Reporting API (async operation)',
         inputSchema: zodToJsonSchema(GetCIJobRunsAuditSchema),
       },
       {
@@ -288,6 +320,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         name: 'update_external_test_run',
         description: 'Update an external test run for a CI job run',
         inputSchema: zodToJsonSchema(UpdateExternalTestRunSchema),
+      },
+      {
+        name: 'get_pipeline_edit_history',
+        description: 'Get edit history for a specified pipeline from the Audit API',
+        inputSchema: zodToJsonSchema(GetPipelineEditHistorySchema),
+      },
+      {
+        name: 'get_manual_ci_job_runs',
+        description: 'Get manually triggered CI job runs from the Audit API',
+        inputSchema: zodToJsonSchema(GetManualCIJobRunsSchema),
       },
     ],
   };
@@ -655,6 +697,36 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             {
               type: 'text',
               text: `External Test Run ${externalTestRunId} updated successfully.`,
+            },
+          ],
+        };
+      }
+
+      case 'get_pipeline_edit_history': {
+        const { pipelineId, StartDate, EndDate } = GetPipelineEditHistorySchema.parse(args);
+        const query = { StartDate, EndDate };
+        const history = await gearsetClient.getPipelineEditHistory(pipelineId, query);
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Pipeline Edit History:\\n${JSON.stringify(history, null, 2)}`,
+            },
+          ],
+        };
+      }
+
+      case 'get_manual_ci_job_runs': {
+        const { jobId, StartDate, EndDate } = GetManualCIJobRunsSchema.parse(args);
+        const query = { StartDate, EndDate };
+        const runs = await gearsetClient.getCIJobRunsAudit(jobId, query);
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Manual CI Job Runs (Audit API):\\n${JSON.stringify(runs, null, 2)}`,
             },
           ],
         };
