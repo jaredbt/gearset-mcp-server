@@ -1,6 +1,6 @@
 {
   "name": "@jaredbt/mcp-server-gearset",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "MCP server for Gearset CI/CD automation and DevOps workflows",
   "license": "MIT",
   "author": "Jared Thompson <jared@apollo.io>",
@@ -44,6 +44,7 @@
     "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.0.0",
     "jest": "^29.7.0",
     "prettier": "^3.3.0",
