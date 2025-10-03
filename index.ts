@@ -262,8 +262,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: zodToJsonSchema(GetDeploymentAuditSchema),
       },
       {
-        name: 'get_ci_job_runs_audit',
-        description: 'Get all CI job runs data using the Reporting API (async operation)',
+        name: 'get_all_ci_job_runs_via_reporting',
+        description: 'Get ALL CI job runs data using the Reporting API (async operation) - includes manually triggered, scheduled, and webhook runs',
         inputSchema: zodToJsonSchema(GetCIJobRunsAuditSchema),
       },
       {
@@ -327,8 +327,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: zodToJsonSchema(GetPipelineEditHistorySchema),
       },
       {
-        name: 'get_manual_ci_job_runs',
-        description: 'Get manually triggered CI job runs from the Audit API',
+        name: 'get_manual_ci_job_runs_via_audit',
+        description: 'Get manually triggered CI job runs from the Audit API (requires Teams/Enterprise license) - only runs where user clicked "play" button',
         inputSchema: zodToJsonSchema(GetManualCIJobRunsSchema),
       },
     ],
@@ -512,7 +512,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'get_ci_job_runs_audit': {
+      case 'get_all_ci_job_runs_via_reporting': {
+        // REPORTING API: Get ALL runs (manual + automatic) via async operation
         const { jobId, StartDate, EndDate } = GetCIJobRunsAuditSchema.parse(args);
         const query = { StartDate, EndDate };
         const operation = await gearsetClient.startCIJobRunsReportingOperation(jobId, query);
@@ -521,7 +522,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: `CI Job Runs Operation Started:\\nOperation ID: ${operation.OperationStatusId}\\nStatus: ${operation.Status}\\n\\nUse get_operation_status with this ID to check progress, then get_operation_result to retrieve data when completed.`,
+              text: `CI Job Runs Operation Started (Reporting API - ALL runs):\\nOperation ID: ${operation.OperationStatusId}\\nStatus: ${operation.Status}\\n\\nUse get_operation_status with this ID to check progress, then get_operation_result to retrieve data when completed.`,
             },
           ],
         };
@@ -717,7 +718,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'get_manual_ci_job_runs': {
+      case 'get_manual_ci_job_runs_via_audit': {
+        // AUDIT API: Get only MANUALLY TRIGGERED runs (requires Teams/Enterprise license)
         const { jobId, StartDate, EndDate } = GetManualCIJobRunsSchema.parse(args);
         const query = { StartDate, EndDate };
         const runs = await gearsetClient.getCIJobRunsAudit(jobId, query);
@@ -726,7 +728,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: `Manual CI Job Runs (Audit API):\\n${JSON.stringify(runs, null, 2)}`,
+              text: `Manual CI Job Runs (Audit API - manual runs only):\\n${JSON.stringify(runs, null, 2)}`,
             },
           ],
         };

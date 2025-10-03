@@ -820,6 +820,7 @@ export class GearsetClient {
 
   /**
    * Start CI job runs reporting operation - returns operation ID for async processing
+   * This gets ALL runs for a specified job (manually triggered + automatic)
    */
   async startCIJobRunsReportingOperation(jobId: string, query: CIJobRunsQuery): Promise<OperationAcceptedResponse> {
     try {

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-10-03
+
+### 🔄 Changed
+- **BREAKING**: Renamed CI job runs tools for clarity and API consistency:
+  - `get_ci_job_runs_audit` → `get_all_ci_job_runs_via_reporting` (Reporting API - gets ALL runs including manual, scheduled, and webhook runs)
+  - `get_manual_ci_job_runs` → `get_manual_ci_job_runs_via_audit` (Audit API - gets only manually triggered runs where user clicked "play")
+- Enhanced tool descriptions to clearly indicate which API each tool uses and licensing requirements
+- Added clearer comments in code to distinguish between Reporting API (all runs, async) and Audit API (manual runs only, sync)
+
 ## [1.0.0] - 2025-01-02
 
 ### 🎉 Major Release: Full API Specification Compliance
@@ -134,6 +143,7 @@ For users upgrading from v0.1.0:
 - TypeScript compilation to ES2022 with NodeNext modules
 - Follows official MCP server patterns and structure
 
-[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaredbt/gearset-mcp-server/releases/tag/v1.0.0
 [0.1.0]: https://github.com/jaredbt/gearset-mcp-server/releases/tag/v0.1.0

@@ -132,9 +132,15 @@ Get deployment audit data from the Audit API.
 - `EndDate` (string): End date/time in UTC format
 - `OptionalParameters` (array, optional): Additional data to include
 
-#### `get_ci_job_runs_audit`
-Get all CI job runs data using the Reporting API (async operation).
+#### `get_all_ci_job_runs_via_reporting`
+Get ALL CI job runs data using the Reporting API (async operation) - includes manually triggered, scheduled, and webhook runs.
 - `jobId` (string): The CI job ID to get runs for
+- `StartDate` (string): Start date/time in UTC format
+- `EndDate` (string): End date/time in UTC format
+
+#### `get_manual_ci_job_runs_via_audit`
+Get manually triggered CI job runs from the Audit API (requires Teams/Enterprise license) - only runs where user clicked "play" button.
+- `jobId` (string): The CI job ID to get manually triggered runs for
 - `StartDate` (string): Start date/time in UTC format
 - `EndDate` (string): End date/time in UTC format
 
