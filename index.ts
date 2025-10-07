@@ -753,7 +753,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 // Error handling
-server.onerror = (error) => {
+server.onerror = (error): void => {
   console.error('[MCP Error]', error);
 };
 
@@ -763,7 +763,7 @@ process.on('SIGINT', async () => {
 });
 
 // Start server
-async function main() {
+async function main(): Promise<void> {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('Gearset MCP server running on stdio');

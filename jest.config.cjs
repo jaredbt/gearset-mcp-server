@@ -2,11 +2,19 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-    },
+  transform: {
+    '^.+\.ts$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          target: 'ES2022',
+          module: 'CommonJS',
+          esModuleInterop: true,
+          allowSyntheticDefaultImports: true,
+          isolatedModules: true,
+        },
+      },
+    ],
   },
   testMatch: ['**/__tests__/**/*.test.ts'],
   collectCoverageFrom: [
