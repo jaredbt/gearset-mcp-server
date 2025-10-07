@@ -5,7 +5,6 @@
  * as v1.x (Server API) while using modern patterns.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
 // Mock the GearsetClient to avoid actual API calls during testing
@@ -13,7 +12,6 @@ jest.mock('../lib/gearset-client');
 
 describe('Gearset MCP Server v2.0', () => {
   let mockGearsetClient: any;
-  let server: McpServer;
   
   // Expected tools from v1.x for comparison
   const expectedTools = [

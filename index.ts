@@ -63,12 +63,13 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting CI job status: ${error.message}`,
+            text: `Error getting CI job status: ${errorMessage}`,
           },
         ],
       };
@@ -97,12 +98,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting CI job: ${error.message}`,
+            text: `Error starting CI job: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -132,12 +133,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting job run status: ${error.message}`,
+            text: `Error getting job run status: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -166,12 +167,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error listing CI jobs: ${error.message}`,
+            text: `Error listing CI jobs: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -200,12 +201,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error cancelling CI job: ${error.message}`,
+            text: `Error cancelling CI job: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -253,12 +254,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting deployment frequency operation: ${error.message}`,
+            text: `Error starting deployment frequency operation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -302,12 +303,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting lead time operation: ${error.message}`,
+            text: `Error starting lead time operation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -350,12 +351,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting change failure rate operation: ${error.message}`,
+            text: `Error starting change failure rate operation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -398,12 +399,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting time to restore operation: ${error.message}`,
+            text: `Error starting time to restore operation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -436,12 +437,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting operation status: ${error.message}`,
+            text: `Error getting operation status: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -470,12 +471,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting operation result: ${error.message}`,
+            text: `Error getting operation result: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -511,12 +512,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting deployment audit data: ${error.message}`,
+            text: `Error getting deployment audit data: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -548,12 +549,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting CI job runs operation: ${error.message}`,
+            text: `Error starting CI job runs operation: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -585,12 +586,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting manual CI job runs: ${error.message}`,
+            text: `Error getting manual CI job runs: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -623,12 +624,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting anonymous Apex audit data: ${error.message}`,
+            text: `Error getting anonymous Apex audit data: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -660,12 +661,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting pipeline edit history: ${error.message}`,
+            text: `Error getting pipeline edit history: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -695,12 +696,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting audit events: ${error.message}`,
+            text: `Error getting audit events: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -733,12 +734,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting unit test job status: ${error.message}`,
+            text: `Error getting unit test job status: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -767,12 +768,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error starting unit test job: ${error.message}`,
+            text: `Error starting unit test job: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -802,12 +803,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error getting unit test job run status: ${error.message}`,
+            text: `Error getting unit test job run status: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -836,12 +837,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error cancelling unit test job: ${error.message}`,
+            text: `Error cancelling unit test job: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -892,12 +893,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error creating external test run: ${error.message}`,
+            text: `Error creating external test run: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -945,12 +946,12 @@ server.registerTool(
           },
         ],
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         content: [
           {
             type: 'text',
-            text: `Error updating external test run: ${error.message}`,
+            text: `Error updating external test run: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
