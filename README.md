@@ -1,6 +1,8 @@
 # Gearset MCP Server
 
-A [Model Context Protocol](https://modelcontextprotocol.io/) server that provides tools for interacting with Gearset's CI/CD automation and DevOps workflows.
+> **⚠️ Disclaimer:** This is an **unofficial, personal project** and is **not affiliated with, endorsed by, or supported by Gearset**. This project provides a third-party integration with Gearset's public APIs using the Model Context Protocol. Use at your own risk.
+
+A community-built [Model Context Protocol](https://modelcontextprotocol.io/) server that provides tools for interacting with Gearset's CI/CD automation and DevOps workflows through their public APIs.
 
 ## Features
 
@@ -310,6 +312,16 @@ This server respects Gearset's API rate limits across all three APIs:
 ### Job ID Issues  
 - CI job IDs can be found in the Gearset web interface
 - Go to Continuous Integration > Your Job > Copy Job ID
+
+## Support
+
+**Important:** This is a personal, open-source project maintained by community contributors. 
+
+- **For issues with this MCP server**: Please open an issue on [GitHub Issues](https://github.com/jaredbt/gearset-mcp-server/issues)
+- **For Gearset product support**: Contact Gearset directly through their official support channels
+- **For API questions**: Refer to [Gearset's official API documentation](https://docs.gearset.com/en/collections/10441571-gearset-api)
+
+We welcome community contributions and will do our best to address issues, but please understand this is maintained on a volunteer basis.
 
 ## Contributing
 

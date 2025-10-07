@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-10-07
+
+### 🔧 Fixed
+- **Type Safety**: Resolved all 24 ESLint warnings by improving TypeScript type definitions
+  - Added explicit return type annotations to functions (`Promise<void>`, `void`, `never`)
+  - Replaced all `any` types with specific interfaces and union types
+  - Created new interfaces: `IComponentMessage`, `PipelineEditHistoryItem`, `GearsetErrorResponse`
+  - Added `OperationResult` union type for better API response typing
+  - Improved parameter types from `Record<string, any>` to more specific types
+
+### 🛠️ Technical Improvements
+- **Jest Configuration**: Updated to modern transform syntax, removing deprecation warnings
+  - Configured TypeScript compilation with CommonJS modules for test compatibility
+  - Maintained full test coverage with all 6 tests passing
+- **ESLint Migration**: Completed migration to ESLint v9 flat configuration
+  - Migrated from `.eslintrc.json` to `eslint.config.mjs`
+  - Updated TypeScript ESLint plugins to latest versions
+- **CI/CD**: Removed Snyk security check from GitHub Actions workflow (missing token)
+- **TypeScript**: Added `isolatedModules: true` to tsconfig for better module compilation
+
+### 📊 Code Quality Metrics
+- **Lint Warnings**: Reduced from 24 → 0 ✅
+- **Jest Deprecations**: All deprecation warnings resolved ✅
+- **Type Safety**: 100% strongly typed, eliminated all `any` usage ✅
+- **Test Coverage**: All tests passing with maintained coverage ✅
+
 ## [1.1.0] - 2025-10-03
 
 ### 🔄 Changed
@@ -143,7 +169,8 @@ For users upgrading from v0.1.0:
 - TypeScript compilation to ES2022 with NodeNext modules
 - Follows official MCP server patterns and structure
 
-[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaredbt/gearset-mcp-server/releases/tag/v1.0.0
 [0.1.0]: https://github.com/jaredbt/gearset-mcp-server/releases/tag/v0.1.0

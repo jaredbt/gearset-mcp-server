@@ -1,6 +1,8 @@
 # Contributing to Gearset MCP Server
 
-Thank you for your interest in contributing to the Gearset MCP Server! This document provides guidelines for contributing to this project.
+> **Note:** This is an unofficial, personal open-source project that is not affiliated with, endorsed by, or supported by Gearset. This project provides a third-party integration with Gearset's public APIs.
+
+Thank you for your interest in contributing to the Gearset MCP Server! This document provides guidelines for contributing to this community project.
 
 ## Code of Conduct
 
@@ -129,9 +131,25 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 - `npm run build` - Build TypeScript to JavaScript
 - `npm run dev` - Run in development mode with tsx
-- `npm test` - Run Jest tests
-- `npm run lint` - Run ESLint
+- `npm test` - Run Jest tests with coverage
+- `npm run lint` - Run ESLint (now using flat config)
 - `npm run format` - Format code with Prettier
+
+## Code Quality Standards
+
+This project maintains high code quality standards:
+
+- **Zero Lint Warnings**: All ESLint warnings must be resolved
+- **Full Type Safety**: No `any` types allowed - use specific interfaces and unions
+- **Test Coverage**: All tests must pass with maintained coverage
+- **Modern Tooling**: Uses ESLint v9 flat config and modern Jest configuration
+
+Before submitting a PR, ensure:
+```bash
+npm run lint    # Should show zero warnings
+npm test        # All tests must pass
+npm run build   # Must compile without errors
+```
 
 ## Release Process
 

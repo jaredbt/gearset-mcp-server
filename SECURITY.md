@@ -1,16 +1,20 @@
 # Security Policy
 
+> **Note:** This is an unofficial, personal open-source project that is not affiliated with, endorsed by, or supported by Gearset. Security issues with this MCP server should be reported here, not to Gearset.
+
 ## Supported Versions
 
 We currently support the following versions with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.x   | :white_check_mark: |
+| 1.1.x   | ✅ |
+| 1.0.x   | ✅ |
+| 0.1.x   | ❌ |
 
 ## Reporting a Vulnerability
 
-We take the security of the Gearset MCP Server seriously. If you discover a security vulnerability, please follow these steps:
+We take the security of this community MCP server seriously. If you discover a security vulnerability, please follow these steps:
 
 ### For Security Issues
 
