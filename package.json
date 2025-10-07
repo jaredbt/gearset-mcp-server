@@ -1,6 +1,6 @@
 {
   "name": "@jaredbt/mcp-server-gearset",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Unofficial third-party MCP server for Gearset CI/CD automation and DevOps workflows",
   "license": "MIT",
   "author": "Jared Thompson <jared@apollo.io>",

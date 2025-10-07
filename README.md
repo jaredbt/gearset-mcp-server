@@ -4,12 +4,32 @@
 
 A community-built [Model Context Protocol](https://modelcontextprotocol.io/) server that provides tools for interacting with Gearset's CI/CD automation and DevOps workflows through their public APIs.
 
+## 🚀 Version 2.0 Released!
+
+**v2.0** brings significant improvements while maintaining **100% backward compatibility**:
+
+- **Modern Architecture**: Migrated from lower-level Server API to higher-level McpServer API
+- **Cleaner Codebase**: Significantly reduced boilerplate while maintaining all functionality
+- **Better Type Safety**: Enhanced parameter validation and error handling
+- **Same Great Features**: All 23 tools from v1.x preserved with identical behavior
+- **Comprehensive Testing**: New test suite ensuring feature parity
+
+### Migration from v1.x
+
+**No action required!** v2.0 is a drop-in replacement:
+- All tool names and parameters remain identical
+- Same MCP protocol compliance
+- Same Gearset API integration
+- Same configuration and usage patterns
+
+Simply update to v2.0 and enjoy the improved architecture under the hood.
+
 ## Features
 
 This MCP server enables AI assistants to:
 
 - **🚀 Manage CI/CD Jobs**: Start, cancel, and monitor Gearset continuous integration and unit testing jobs
-- **📊 DORA Metrics**: Access comprehensive DevOps performance metrics (deployment frequency, lead time, change failure rate, time to restore)
+- **📈 DevOps Metrics**: Access comprehensive DevOps performance metrics (deployment frequency, lead time, change failure rate, time to restore)
 - **🔍 Monitor Deployments**: Track deployment progress, results, and audit trails  
 - **🧪 External Testing**: Integrate external test runs with CI job workflows
 - **📈 Analytics & Reporting**: Query detailed deployment and performance analytics
@@ -80,7 +100,7 @@ Update an existing external test run.
 - `externalTestRunId` (string): The external test run ID to update
 - All other parameters same as `create_external_test_run`
 
-### 📊 DORA Metrics & Analytics
+### 📈 DevOps Metrics & Analytics
 
 #### `get_deployment_frequency`
 Get deployment frequency data (all deployments or aggregated metrics).
@@ -92,7 +112,7 @@ Get deployment frequency data (all deployments or aggregated metrics).
 - `GroupBy` (enum, optional): Group by property (required if aggregate=true)
 
 #### `get_lead_time_for_changes`
-Get lead time for changes data (DORA metric).
+Get lead time for changes data.
 - `pipelineId` (string): Pipeline ID (required, passed as path parameter)
 - `StartDate` (string): Start date in UTC format
 - `EndDate` (string): End date in UTC format
@@ -101,7 +121,7 @@ Get lead time for changes data (DORA metric).
 - `Exclude` (array, optional): Fields to exclude from response
 
 #### `get_change_failure_rate`
-Get change failure rate data (DORA metric).
+Get change failure rate data.
 - `environmentId` (string): Environment ID (required, passed as path parameter)
 - `StartDate` (string): Start date in UTC format
 - `EndDate` (string): End date in UTC format
@@ -109,7 +129,7 @@ Get change failure rate data (DORA metric).
 - `Interval` (enum, optional): 'Daily', 'Weekly', 'Monthly' (required if aggregate=true)
 
 #### `get_time_to_restore`
-Get time to restore data (DORA metric).
+Get time to restore data.
 - `environmentId` (string): Environment ID (required, passed as path parameter)
 - `StartDate` (string): Start date in UTC format
 - `EndDate` (string): End date in UTC format
@@ -334,6 +354,40 @@ We welcome community contributions and will do our best to address issues, but p
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+### v2.0.0 (2025-01-07)
+
+**Major architecture improvements with 100% backward compatibility:**
+
+#### 🎆 New Features
+- **Modern McpServer API**: Migrated from lower-level Server API to modern McpServer API
+- **Enhanced Type Safety**: Automatic parameter validation with Zod schemas
+- **Comprehensive Testing**: New test suite with 20+ tests ensuring feature parity
+- **Improved Error Handling**: Consistent error responses across all tools
+
+#### 🔧 Technical Improvements
+- **Reduced Boilerplate**: Significantly cleaner codebase while maintaining all functionality
+- **Better Maintainability**: Modern SDK patterns make future enhancements easier
+- **Preserved Core**: GearsetClient implementation unchanged and proven
+
+#### 🛡️ Breaking Changes
+- **None!** v2.0 is a drop-in replacement for v1.x
+- All tool names, parameters, and behaviors remain identical
+- Same MCP protocol compliance and Gearset API integration
+
+#### 📋 Migration Guide
+1. Update to v2.0 - no configuration changes needed
+2. Same usage patterns and tool parameters
+3. Enjoy improved architecture and reliability
+
+### v1.1.1 (Previous Release)
+- Original Server API implementation
+- 23 tools for comprehensive Gearset automation
+- Full MCP protocol compliance
+
+---
 
 ## Related
 

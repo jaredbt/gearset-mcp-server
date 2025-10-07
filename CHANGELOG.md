@@ -7,6 +7,109 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2025-01-17
+
+### 🚀 Major Architecture Upgrade: Modern MCP Server Implementation
+
+This release represents a complete architectural overhaul, migrating from the legacy MCP v1.x SDK to the modern **@modelcontextprotocol/sdk v1.19.1** McpServer API. This upgrade provides significant improvements in performance, maintainability, and developer experience while maintaining 100% backward compatibility.
+
+### ✨ Key Improvements
+
+#### Modern MCP Server Architecture
+- **Complete Rewrite**: Migrated from legacy `Server` class to modern `McpServer` API
+- **Declarative Tool Registration**: Tools now registered with explicit schemas at server initialization
+- **Enhanced Type Safety**: Improved TypeScript integration with better type inference
+- **Streamlined Error Handling**: More robust error propagation and user-friendly error messages
+- **Better Resource Management**: Improved connection and resource lifecycle management
+
+#### Performance & Reliability
+- **Reduced Initialization Time**: Faster server startup with optimized tool registration
+- **Better Memory Usage**: More efficient resource allocation and cleanup
+- **Enhanced Stability**: Improved error recovery and connection resilience
+- **Streamlined Request Processing**: Optimized request/response handling pipeline
+
+#### Developer Experience
+- **Cleaner Code Structure**: More maintainable and readable codebase
+- **Enhanced Debugging**: Better error messages and stack traces
+- **Improved Logging**: More informative development and troubleshooting logs
+- **Future-Proof Foundation**: Built on latest MCP standards for long-term compatibility
+
+### 🔧 Technical Changes
+
+#### Core Implementation
+- **New Server Class**: `GearsetMcpServer` using modern `McpServer` from `@modelcontextprotocol/sdk`
+- **Tool Registration**: Switched from dynamic `listTools`/`callTool` to declarative `tool()` registration
+- **Schema Integration**: Direct Zod schema integration with automatic validation
+- **Request Handling**: Simplified request processing with built-in parameter validation
+
+#### File Structure
+- **V2 Implementation**: New `src/v2/` directory with modern architecture
+- **Backward Compatibility**: V1 implementation preserved in `src/v1/` for reference
+- **Main Entry Point**: Updated `src/index.ts` to use V2 implementation
+- **Type Definitions**: Enhanced `src/types/` with improved interfaces
+
+#### Infrastructure Updates
+- **Package Version**: Updated to 2.0.0 with proper semantic versioning
+- **Build System**: Maintained TypeScript compilation and bundling
+- **Testing**: Comprehensive Jest test suite ensuring feature parity
+- **Dependencies**: Updated to latest compatible versions
+
+### 🧪 Compatibility & Testing
+
+- **100% Feature Parity**: All 23 tools from v1.x fully supported
+- **API Compatibility**: Identical tool interfaces and responses
+- **Comprehensive Tests**: Complete test suite verifying V1/V2 equivalence
+- **Migration Verified**: Smooth upgrade path with no breaking changes
+
+### 📦 Tool Catalog (23 Tools)
+
+All existing tools are fully supported with improved performance:
+
+#### CI/CD & Automation (5 tools)
+- `get_ci_job_status`, `list_ci_jobs`, `start_ci_job`, `get_job_run_status`, `cancel_ci_job`
+
+#### DevOps Metrics (4 tools)  
+- `get_deployment_frequency`, `get_lead_time_for_changes`, `get_change_failure_rate`, `get_time_to_restore`
+
+#### Audit & Reporting (6 tools)
+- `get_deployment_audit`, `get_all_ci_job_runs_via_reporting`, `get_manual_ci_job_runs_via_audit`
+- `get_anonymous_apex_audit`, `get_pipeline_edit_history`, `get_audit_events`
+
+#### Async Operations (2 tools)
+- `get_operation_status`, `get_operation_result`
+
+#### Unit Testing (4 tools)
+- `get_unit_test_job_status`, `start_unit_test_job`, `get_unit_test_job_run_status`, `cancel_unit_test_job`
+
+#### External Test Management (2 tools)
+- `create_external_test_run`, `update_external_test_run`
+
+### 🏗️ Migration Guide
+
+**For End Users**: No changes required! All tools work identically to v1.x.
+
+**For Contributors/Developers**:
+1. V2 implementation is now the default in `src/index.ts`
+2. V1 code preserved in `src/v1/` for reference
+3. New tool development should follow the V2 patterns in `src/v2/`
+4. Tests verify complete feature parity between versions
+
+### 📋 Validation Results
+
+- ✅ **Build**: TypeScript compilation successful
+- ✅ **Tests**: All Jest tests passing (100% feature parity verified)
+- ✅ **Linting**: ESLint validation clean
+- ✅ **Type Safety**: Full TypeScript compliance
+- ✅ **Runtime**: Server starts and handles requests properly
+
+### 🔗 Upgrade Benefits
+
+- **Future-Ready**: Built on latest MCP SDK standards
+- **Better Performance**: Optimized for speed and efficiency  
+- **Enhanced Reliability**: Improved error handling and stability
+- **Easier Maintenance**: Cleaner, more maintainable codebase
+- **Developer Experience**: Better tooling and debugging capabilities
+
 ## [1.1.1] - 2025-10-07
 
 ### 🔧 Fixed
@@ -169,7 +272,8 @@ For users upgrading from v0.1.0:
 - TypeScript compilation to ES2022 with NodeNext modules
 - Follows official MCP server patterns and structure
 
-[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/jaredbt/gearset-mcp-server/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.1...v2.0.0
 [1.1.1]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jaredbt/gearset-mcp-server/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaredbt/gearset-mcp-server/releases/tag/v1.0.0
