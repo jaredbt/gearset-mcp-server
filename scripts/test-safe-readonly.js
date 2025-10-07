@@ -20,7 +20,7 @@ console.log('🔒 SAFE READ-ONLY Test for PRODUCTION Gearset...');
 console.log('Token found:', process.env.GEARSET_API_TOKEN.substring(0, 8) + '...');
 console.log('⚠️  This test will ONLY check authentication - no changes will be made');
 
-const serverPath = path.join(__dirname, 'dist', 'index.js');
+const serverPath = path.join(__dirname, '../dist', 'index.js');
 const server = spawn('node', [serverPath], {
   env: process.env,
   stdio: ['pipe', 'pipe', 'pipe']

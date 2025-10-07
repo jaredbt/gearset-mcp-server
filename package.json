@@ -20,6 +20,8 @@
     "test": "jest --config=jest.config.cjs --coverage",
     "dev": "tsx index.ts",
     "start": "node dist/index.js",
+    "test:server": "node scripts/test-server.js",
+    "test:safe": "node scripts/test-safe-readonly.js",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
   },

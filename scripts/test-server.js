@@ -21,7 +21,7 @@ console.log('🚀 Testing Gearset MCP Server...');
 console.log('Token found:', process.env.GEARSET_API_TOKEN.substring(0, 8) + '...');
 
 // Test the built server
-const serverPath = path.join(__dirname, 'dist', 'index.js');
+const serverPath = path.join(__dirname, '../dist', 'index.js');
 const server = spawn('node', [serverPath], {
   env: process.env,
   stdio: ['pipe', 'pipe', 'pipe']
