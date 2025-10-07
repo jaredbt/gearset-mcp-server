@@ -16,10 +16,7 @@ module.exports = {
       },
     ],
   },
-  testMatch: ['**/__tests__/**/*.test.ts'],
-  collectCoverageFrom: [
-    'lib/**/*.ts',
-    'index.ts',
-    '!**/*.d.ts',
-  ],
+  rootDir: '..',
+  testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
+  collectCoverageFrom: ['<rootDir>/lib/**/*.ts', '<rootDir>/index.ts', '!**/*.d.ts'],
 };

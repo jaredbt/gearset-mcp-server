@@ -2,10 +2,10 @@
 
 /**
  * Gearset MCP Server v2.0
- * 
+ *
  * A Model Context Protocol server that provides tools for interacting with
  * Gearset's CI/CD automation and DevOps workflows.
- * 
+ *
  * v2.0 Changes:
  * - Migrated from lower-level Server API to higher-level McpServer API
  * - Simplified tool registration with built-in validation (no manual request handlers)
@@ -54,7 +54,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       const status = await gearsetClient.getCIJobStatus(jobId);
-      
+
       return {
         content: [
           {
@@ -89,7 +89,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       const result = await gearsetClient.startCIJob(jobId);
-      
+
       return {
         content: [
           {
@@ -124,7 +124,7 @@ server.registerTool(
   async ({ jobId, runRequestId }) => {
     try {
       const status = await gearsetClient.getJobRunStatus(jobId, runRequestId);
-      
+
       return {
         content: [
           {
@@ -158,7 +158,7 @@ server.registerTool(
   async ({ limit }) => {
     try {
       const jobs = await gearsetClient.listCIJobs(limit);
-      
+
       return {
         content: [
           {
@@ -192,7 +192,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       await gearsetClient.cancelCIJob(jobId);
-      
+
       return {
         content: [
           {
@@ -228,8 +228,21 @@ server.registerTool(
       EndDate: z.string().describe('End date in UTC format (e.g., 2024-01-31T23:59:59Z)'),
       PipelineId: z.string().optional().describe('Filter by specific pipeline'),
       aggregate: z.boolean().optional().describe('Return aggregate metrics'),
-      Interval: z.enum(['Daily', 'Weekly', 'Monthly']).optional().describe('Time interval for aggregation (required if aggregate=true)'),
-      GroupBy: z.enum(['TotalDeploymentCount', 'Status', 'Owner', 'SourceUsername', 'TargetUsername', 'DeploymentType']).optional().describe('Property to group by (required if aggregate=true)'),
+      Interval: z
+        .enum(['Daily', 'Weekly', 'Monthly'])
+        .optional()
+        .describe('Time interval for aggregation (required if aggregate=true)'),
+      GroupBy: z
+        .enum([
+          'TotalDeploymentCount',
+          'Status',
+          'Owner',
+          'SourceUsername',
+          'TargetUsername',
+          'DeploymentType',
+        ])
+        .optional()
+        .describe('Property to group by (required if aggregate=true)'),
     },
   },
   async ({ StartDate, EndDate, PipelineId, aggregate, Interval, GroupBy }) => {
@@ -237,7 +250,9 @@ server.registerTool(
       let operation;
       if (aggregate) {
         if (!Interval || !GroupBy) {
-          throw new Error('Interval and GroupBy are required for aggregate deployment frequency data');
+          throw new Error(
+            'Interval and GroupBy are required for aggregate deployment frequency data'
+          );
         }
         const query = { StartDate, EndDate, Interval, GroupBy, PipelineId };
         operation = await gearsetClient.startDeploymentFrequencyAggregateOperation(query);
@@ -245,7 +260,7 @@ server.registerTool(
         const query = { StartDate, EndDate, PipelineId };
         operation = await gearsetClient.startDeploymentFrequencyOperation(query);
       }
-      
+
       return {
         content: [
           {
@@ -277,8 +292,20 @@ server.registerTool(
       StartDate: z.string().describe('Start date in UTC format (e.g., 2024-01-01T00:00:00Z)'),
       EndDate: z.string().describe('End date in UTC format (e.g., 2024-01-31T23:59:59Z)'),
       aggregate: z.boolean().optional().describe('Return aggregate metrics'),
-      Interval: z.enum(['Daily', 'Weekly', 'Monthly']).optional().describe('Time interval for aggregation (required if aggregate=true)'),
-      Exclude: z.array(z.enum(['PullRequestLinkedTickets', 'PullRequestDescription', 'PullRequestAuthorInformation'])).optional().describe('Fields to exclude from response'),
+      Interval: z
+        .enum(['Daily', 'Weekly', 'Monthly'])
+        .optional()
+        .describe('Time interval for aggregation (required if aggregate=true)'),
+      Exclude: z
+        .array(
+          z.enum([
+            'PullRequestLinkedTickets',
+            'PullRequestDescription',
+            'PullRequestAuthorInformation',
+          ])
+        )
+        .optional()
+        .describe('Fields to exclude from response'),
     },
   },
   async ({ pipelineId, StartDate, EndDate, aggregate, Interval, Exclude }) => {
@@ -289,12 +316,15 @@ server.registerTool(
           throw new Error('Interval is required for aggregate lead time data');
         }
         const query = { StartDate, EndDate, Interval };
-        operation = await gearsetClient.startLeadTimeForChangesAggregateOperation(pipelineId, query);
+        operation = await gearsetClient.startLeadTimeForChangesAggregateOperation(
+          pipelineId,
+          query
+        );
       } else {
         const query = { StartDate, EndDate, Exclude };
         operation = await gearsetClient.startLeadTimeForChangesOperation(pipelineId, query);
       }
-      
+
       return {
         content: [
           {
@@ -326,7 +356,10 @@ server.registerTool(
       StartDate: z.string().describe('Start date in UTC format (e.g., 2024-01-01T00:00:00Z)'),
       EndDate: z.string().describe('End date in UTC format (e.g., 2024-01-31T23:59:59Z)'),
       aggregate: z.boolean().optional().describe('Return aggregate metrics'),
-      Interval: z.enum(['Daily', 'Weekly', 'Monthly']).optional().describe('Time interval for aggregation (required if aggregate=true)'),
+      Interval: z
+        .enum(['Daily', 'Weekly', 'Monthly'])
+        .optional()
+        .describe('Time interval for aggregation (required if aggregate=true)'),
     },
   },
   async ({ environmentId, StartDate, EndDate, aggregate, Interval }) => {
@@ -337,12 +370,15 @@ server.registerTool(
           throw new Error('Interval is required for aggregate change failure rate data');
         }
         const query = { StartDate, EndDate, Interval };
-        operation = await gearsetClient.startChangeFailureRateAggregateOperation(environmentId, query);
+        operation = await gearsetClient.startChangeFailureRateAggregateOperation(
+          environmentId,
+          query
+        );
       } else {
         const query = { StartDate, EndDate };
         operation = await gearsetClient.startChangeFailureRateOperation(environmentId, query);
       }
-      
+
       return {
         content: [
           {
@@ -374,7 +410,10 @@ server.registerTool(
       StartDate: z.string().describe('Start date in UTC format (e.g., 2024-01-01T00:00:00Z)'),
       EndDate: z.string().describe('End date in UTC format (e.g., 2024-01-31T23:59:59Z)'),
       aggregate: z.boolean().optional().describe('Return aggregate metrics'),
-      Interval: z.enum(['Daily', 'Weekly', 'Monthly']).optional().describe('Time interval for aggregation (required if aggregate=true)'),
+      Interval: z
+        .enum(['Daily', 'Weekly', 'Monthly'])
+        .optional()
+        .describe('Time interval for aggregation (required if aggregate=true)'),
     },
   },
   async ({ environmentId, StartDate, EndDate, aggregate, Interval }) => {
@@ -390,7 +429,7 @@ server.registerTool(
         const query = { StartDate, EndDate };
         operation = await gearsetClient.startTimeToRestoreOperation(environmentId, query);
       }
-      
+
       return {
         content: [
           {
@@ -428,7 +467,7 @@ server.registerTool(
   async ({ operationId }) => {
     try {
       const status = await gearsetClient.getOperationStatus(operationId);
-      
+
       return {
         content: [
           {
@@ -462,7 +501,7 @@ server.registerTool(
   async ({ operationId }) => {
     try {
       const result = await gearsetClient.getOperationResult(operationId);
-      
+
       return {
         content: [
           {
@@ -496,14 +535,19 @@ server.registerTool(
     inputSchema: {
       StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
       EndDate: z.string().describe('End date/time in UTC format (e.g., 2024-01-31T23:59:59Z)'),
-      OptionalParameters: z.array(z.enum(['JiraTickets', 'AsanaTasks', 'AzureDevOpsWorkItems', 'AnonymousApexExecutions'])).optional().describe('Additional data to include in response'),
+      OptionalParameters: z
+        .array(
+          z.enum(['JiraTickets', 'AsanaTasks', 'AzureDevOpsWorkItems', 'AnonymousApexExecutions'])
+        )
+        .optional()
+        .describe('Additional data to include in response'),
     },
   },
   async ({ StartDate, EndDate, OptionalParameters }) => {
     try {
       const query = { StartDate, EndDate, OptionalParameters };
       const deployments = await gearsetClient.getDeploymentAudit(query);
-      
+
       return {
         content: [
           {
@@ -529,7 +573,8 @@ server.registerTool(
   'get_all_ci_job_runs_via_reporting',
   {
     title: 'Get All CI Job Runs (Reporting API)',
-    description: 'Get ALL CI job runs data using the Reporting API (async operation) - includes manually triggered, scheduled, and webhook runs',
+    description:
+      'Get ALL CI job runs data using the Reporting API (async operation) - includes manually triggered, scheduled, and webhook runs',
     inputSchema: {
       jobId: z.string().describe('The CI job ID to get runs for'),
       StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
@@ -540,7 +585,7 @@ server.registerTool(
     try {
       const query = { StartDate, EndDate };
       const operation = await gearsetClient.startCIJobRunsReportingOperation(jobId, query);
-      
+
       return {
         content: [
           {
@@ -566,7 +611,8 @@ server.registerTool(
   'get_manual_ci_job_runs_via_audit',
   {
     title: 'Get Manual CI Job Runs (Audit API)',
-    description: 'Get manually triggered CI job runs from the Audit API (requires Teams/Enterprise license) - only runs where user clicked "play" button',
+    description:
+      'Get manually triggered CI job runs from the Audit API (requires Teams/Enterprise license) - only runs where user clicked "play" button',
     inputSchema: {
       jobId: z.string().describe('The CI job ID to get manually triggered runs for'),
       StartDate: z.string().describe('Start date/time in UTC format (e.g., 2024-01-01T00:00:00Z)'),
@@ -577,7 +623,7 @@ server.registerTool(
     try {
       const query = { StartDate, EndDate };
       const runs = await gearsetClient.getCIJobRunsAudit(jobId, query);
-      
+
       return {
         content: [
           {
@@ -615,7 +661,7 @@ server.registerTool(
     try {
       const query = { StartDate, EndDate, OrgUsername, Username };
       const executions = await gearsetClient.getAnonymousApexAudit(query);
-      
+
       return {
         content: [
           {
@@ -652,7 +698,7 @@ server.registerTool(
     try {
       const query = { StartDate, EndDate };
       const history = await gearsetClient.getPipelineEditHistory(pipelineId, query);
-      
+
       return {
         content: [
           {
@@ -680,14 +726,17 @@ server.registerTool(
     title: 'Get Audit Events',
     description: 'Get audit events for CI jobs using the Audit API (legacy method)',
     inputSchema: {
-      resourceId: z.string().optional().describe('The resource ID to get audit events for (e.g., job ID)'),
+      resourceId: z
+        .string()
+        .optional()
+        .describe('The resource ID to get audit events for (e.g., job ID)'),
       limit: z.number().optional().describe('Maximum number of events to return'),
     },
   },
   async ({ resourceId, limit }) => {
     try {
       const events = await gearsetClient.getAuditEvents(resourceId, limit);
-      
+
       return {
         content: [
           {
@@ -725,7 +774,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       const status = await gearsetClient.getUnitTestJobStatus(jobId);
-      
+
       return {
         content: [
           {
@@ -759,7 +808,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       const result = await gearsetClient.startUnitTestJob(jobId);
-      
+
       return {
         content: [
           {
@@ -794,7 +843,7 @@ server.registerTool(
   async ({ jobId, runRequestId }) => {
     try {
       const status = await gearsetClient.getUnitTestJobRunStatus(jobId, runRequestId);
-      
+
       return {
         content: [
           {
@@ -828,7 +877,7 @@ server.registerTool(
   async ({ jobId }) => {
     try {
       const result = await gearsetClient.cancelUnitTestJob(jobId);
-      
+
       return {
         content: [
           {
@@ -861,17 +910,40 @@ server.registerTool(
     description: 'Create an external test run for a CI job run',
     inputSchema: {
       ciRunId: z.string().describe('The CI job run ID'),
-      provider: z.string().describe('The provider (software/system/product) of the external testing data'),
-      statusClass: z.enum(['Succeeded', 'Failed', 'Warning', 'InProgress', 'Scheduled', 'NotRun']).describe('The status class of the test run'),
-      providerRunId: z.string().optional().describe('An optional ID to identify the test run in the provider'),
-      resultsUrl: z.string().optional().describe('An optional link to the external test run results'),
+      provider: z
+        .string()
+        .describe('The provider (software/system/product) of the external testing data'),
+      statusClass: z
+        .enum(['Succeeded', 'Failed', 'Warning', 'InProgress', 'Scheduled', 'NotRun'])
+        .describe('The status class of the test run'),
+      providerRunId: z
+        .string()
+        .optional()
+        .describe('An optional ID to identify the test run in the provider'),
+      resultsUrl: z
+        .string()
+        .optional()
+        .describe('An optional link to the external test run results'),
       status: z.string().optional().describe('An optional status from the provider'),
-      statusMessage: z.string().optional().describe('An optional message providing additional information'),
+      statusMessage: z
+        .string()
+        .optional()
+        .describe('An optional message providing additional information'),
       startTimeUtc: z.string().optional().describe('The optional UTC start time of the test run'),
       endTimeUtc: z.string().optional().describe('The optional UTC end time of the test run'),
     },
   },
-  async ({ ciRunId, provider, statusClass, providerRunId, resultsUrl, status, statusMessage, startTimeUtc, endTimeUtc }) => {
+  async ({
+    ciRunId,
+    provider,
+    statusClass,
+    providerRunId,
+    resultsUrl,
+    status,
+    statusMessage,
+    startTimeUtc,
+    endTimeUtc,
+  }) => {
     try {
       const data = {
         Provider: provider,
@@ -881,10 +953,10 @@ server.registerTool(
         Status: status,
         StatusMessage: statusMessage,
         StartTimeUtc: startTimeUtc,
-        EndTimeUtc: endTimeUtc
+        EndTimeUtc: endTimeUtc,
       };
       const result = await gearsetClient.createExternalTestRun(ciRunId, data);
-      
+
       return {
         content: [
           {
@@ -914,17 +986,41 @@ server.registerTool(
     inputSchema: {
       ciRunId: z.string().describe('The CI job run ID'),
       externalTestRunId: z.string().describe('The external test run ID to update'),
-      provider: z.string().describe('The provider (software/system/product) of the external testing data'),
-      statusClass: z.enum(['Succeeded', 'Failed', 'Warning', 'InProgress', 'Scheduled', 'NotRun']).describe('The status class of the test run'),
-      providerRunId: z.string().optional().describe('An optional ID to identify the test run in the provider'),
-      resultsUrl: z.string().optional().describe('An optional link to the external test run results'),
+      provider: z
+        .string()
+        .describe('The provider (software/system/product) of the external testing data'),
+      statusClass: z
+        .enum(['Succeeded', 'Failed', 'Warning', 'InProgress', 'Scheduled', 'NotRun'])
+        .describe('The status class of the test run'),
+      providerRunId: z
+        .string()
+        .optional()
+        .describe('An optional ID to identify the test run in the provider'),
+      resultsUrl: z
+        .string()
+        .optional()
+        .describe('An optional link to the external test run results'),
       status: z.string().optional().describe('An optional status from the provider'),
-      statusMessage: z.string().optional().describe('An optional message providing additional information'),
+      statusMessage: z
+        .string()
+        .optional()
+        .describe('An optional message providing additional information'),
       startTimeUtc: z.string().optional().describe('The optional UTC start time of the test run'),
       endTimeUtc: z.string().optional().describe('The optional UTC end time of the test run'),
     },
   },
-  async ({ ciRunId, externalTestRunId, provider, statusClass, providerRunId, resultsUrl, status, statusMessage, startTimeUtc, endTimeUtc }) => {
+  async ({
+    ciRunId,
+    externalTestRunId,
+    provider,
+    statusClass,
+    providerRunId,
+    resultsUrl,
+    status,
+    statusMessage,
+    startTimeUtc,
+    endTimeUtc,
+  }) => {
     try {
       const data = {
         Provider: provider,
@@ -934,10 +1030,10 @@ server.registerTool(
         Status: status,
         StatusMessage: statusMessage,
         StartTimeUtc: startTimeUtc,
-        EndTimeUtc: endTimeUtc
+        EndTimeUtc: endTimeUtc,
       };
       await gearsetClient.updateExternalTestRun(ciRunId, externalTestRunId, data);
-      
+
       return {
         content: [
           {
@@ -976,7 +1072,7 @@ async function main(): Promise<void> {
   console.error('Gearset MCP server v2.0 (McpServer API) running on stdio');
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error('Server failed to start:', error);
   process.exit(1);
 });

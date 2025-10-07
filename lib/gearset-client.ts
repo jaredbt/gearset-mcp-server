@@ -1,6 +1,6 @@
 /**
  * Gearset API Client
- * 
+ *
  * A TypeScript client for interacting with Gearset's Automation API.
  * Implements rate limiting, error handling, and proper authentication.
  */
@@ -24,7 +24,12 @@ export interface ContinuousIntegrationRunRequestBody {
   SourceGitCommitId?: string;
 }
 
-export type ContinuousIntegrationRunStates = 'Pending' | 'Started' | 'Succeeded' | 'Partial' | 'Failed';
+export type ContinuousIntegrationRunStates =
+  | 'Pending'
+  | 'Started'
+  | 'Succeeded'
+  | 'Partial'
+  | 'Failed';
 
 export interface ContinuousIntegrationRunStatus {
   State: ContinuousIntegrationRunStates;
@@ -44,7 +49,14 @@ export interface UnitTestRunRequest {
   RunRequestId: string;
 }
 
-export type UnitTestRunStates = 'Pending' | 'Started' | 'Skipped' | 'Succeeded' | 'Failed' | 'Error' | 'Cancelled';
+export type UnitTestRunStates =
+  | 'Pending'
+  | 'Started'
+  | 'Skipped'
+  | 'Succeeded'
+  | 'Failed'
+  | 'Error'
+  | 'Cancelled';
 
 export interface UnitTestRunStatus {
   State: UnitTestRunStates;
@@ -52,7 +64,13 @@ export interface UnitTestRunStatus {
 }
 
 // External Test Run types
-export type ExternalTestRunDataStatusClass = 'Succeeded' | 'Failed' | 'Warning' | 'InProgress' | 'Scheduled' | 'NotRun';
+export type ExternalTestRunDataStatusClass =
+  | 'Succeeded'
+  | 'Failed'
+  | 'Warning'
+  | 'InProgress'
+  | 'Scheduled'
+  | 'NotRun';
 
 export interface ExternalTestRunData {
   Provider: string;
@@ -108,9 +126,31 @@ export interface DeploymentFrequencyEntry {
   Date: string;
   FriendlyName?: string;
   SourceUsername: string;
-  SourceMetadataLocationType: 'Developer' | 'Sandbox' | 'Production' | 'ScratchOrg' | 'OnDisk' | 'GitHubBranch' | 'GitLabBranch' | 'BitbucketBranch' | 'VstsGitBranch' | 'AzureDevOpsGitBranch' | 'Other';
+  SourceMetadataLocationType:
+    | 'Developer'
+    | 'Sandbox'
+    | 'Production'
+    | 'ScratchOrg'
+    | 'OnDisk'
+    | 'GitHubBranch'
+    | 'GitLabBranch'
+    | 'BitbucketBranch'
+    | 'VstsGitBranch'
+    | 'AzureDevOpsGitBranch'
+    | 'Other';
   TargetUsername: string;
-  TargetMetadataLocationType: 'Developer' | 'Sandbox' | 'Production' | 'ScratchOrg' | 'OnDisk' | 'GitHubBranch' | 'GitLabBranch' | 'BitbucketBranch' | 'VstsGitBranch' | 'AzureDevOpsGitBranch' | 'Other';
+  TargetMetadataLocationType:
+    | 'Developer'
+    | 'Sandbox'
+    | 'Production'
+    | 'ScratchOrg'
+    | 'OnDisk'
+    | 'GitHubBranch'
+    | 'GitLabBranch'
+    | 'BitbucketBranch'
+    | 'VstsGitBranch'
+    | 'AzureDevOpsGitBranch'
+    | 'Other';
   DeploymentType: 'Standard' | 'Rollback' | 'DeployToTarget' | 'ContinuousIntegration' | 'Other';
   SalesforceFinalDeploymentId?: string;
   PipelineId?: string;
@@ -135,7 +175,13 @@ export interface DeploymentFrequencyAggregateResponse {
   Items: Int32DeploymentFrequencyAggregateGroup[];
 }
 
-export type DeploymentFrequencyGroupBy = 'TotalDeploymentCount' | 'Status' | 'Owner' | 'SourceUsername' | 'TargetUsername' | 'DeploymentType';
+export type DeploymentFrequencyGroupBy =
+  | 'TotalDeploymentCount'
+  | 'Status'
+  | 'Owner'
+  | 'SourceUsername'
+  | 'TargetUsername'
+  | 'DeploymentType';
 
 // Change Failure Rate types
 export interface DeploymentEventPrResponse {
@@ -211,7 +257,10 @@ export interface LeadTimeAggregateResponse {
   Environments: LeadTimeAggregateResponseEntry[];
 }
 
-export type LeadTimeOptionalParameter = 'PullRequestLinkedTickets' | 'PullRequestDescription' | 'PullRequestAuthorInformation';
+export type LeadTimeOptionalParameter =
+  | 'PullRequestLinkedTickets'
+  | 'PullRequestDescription'
+  | 'PullRequestAuthorInformation';
 
 // Time to Restore types
 export interface TimeToRestoreEventResponse {
@@ -245,10 +294,20 @@ export interface ContinuousIntegrationRunObject {
   EndTimeUtc: string;
   StartTimeUtc: string;
   TriggeredBy: string;
-  Trigger: 'Scheduler' | 'WebHook' | 'Interactive' | 'PublicApi' | 'PipelinesPrChildValidation' | 'PipelinesValidateBeforeMerge';
+  Trigger:
+    | 'Scheduler'
+    | 'WebHook'
+    | 'Interactive'
+    | 'PublicApi'
+    | 'PipelinesPrChildValidation'
+    | 'PipelinesValidateBeforeMerge';
   ErrorMessage: string;
   Failures: IComponentMessage[];
-  RunOutcome: 'DeploymentOrValidationAttempted' | 'RunStoppedDueToStaticCodeAnalysisResults' | 'RunThrewException' | 'RunStoppedDueToLwcTestResults';
+  RunOutcome:
+    | 'DeploymentOrValidationAttempted'
+    | 'RunStoppedDueToStaticCodeAnalysisResults'
+    | 'RunThrewException'
+    | 'RunStoppedDueToLwcTestResults';
   JobType: 'Deployment' | 'Validation';
   NumberOfStaticCodeAnalysisIssues: number;
   NumberOfStaticCodeAnalysisRulesEnabled: number;
@@ -378,10 +437,14 @@ export interface DeploymentAuditEntry {
 
 export interface DeploymentAuditQuery {
   StartDate: string; // Note: Capital S as per API spec
-  EndDate: string; // Note: Capital E as per API spec  
-  OptionalParameters?: ('JiraTickets' | 'AsanaTasks' | 'AzureDevOpsWorkItems' | 'AnonymousApexExecutions')[];
+  EndDate: string; // Note: Capital E as per API spec
+  OptionalParameters?: (
+    | 'JiraTickets'
+    | 'AsanaTasks'
+    | 'AzureDevOpsWorkItems'
+    | 'AnonymousApexExecutions'
+  )[];
 }
-
 
 export interface AnonymousApexQuery {
   StartDate: string;
@@ -442,15 +505,15 @@ export interface GearsetErrorResponse {
 }
 
 // Union type for all possible operation results
-export type OperationResult = 
-  | DeploymentFrequencyResponse 
-  | DeploymentFrequencyAggregateResponse 
-  | LeadTimeResponse 
-  | LeadTimeAggregateResponse 
-  | ChangeFailureRateResponse 
-  | ChangeFailureRateAggregateResponse 
-  | TimeToRestoreResponse 
-  | TimeToRestoreAggregateResponse 
+export type OperationResult =
+  | DeploymentFrequencyResponse
+  | DeploymentFrequencyAggregateResponse
+  | LeadTimeResponse
+  | LeadTimeAggregateResponse
+  | ChangeFailureRateResponse
+  | ChangeFailureRateAggregateResponse
+  | TimeToRestoreResponse
+  | TimeToRestoreAggregateResponse
   | ContinuousIntegrationJobsResponse;
 
 export class GearsetClient {
@@ -460,15 +523,15 @@ export class GearsetClient {
   private automationBaseURL = 'https://api.gearset.com/public/automation';
   private reportingBaseURL = 'https://api.gearset.com/public/reporting';
   private auditBaseURL = 'https://api.gearset.com/public/audit';
-  
+
   constructor(private apiToken: string) {
     if (!apiToken || apiToken.trim() === '') {
       throw new Error('Gearset API token is required');
     }
-    
+
     const commonConfig = {
       headers: {
-        'Authorization': `token ${apiToken}`,
+        Authorization: `token ${apiToken}`,
         'Content-Type': 'application/json',
         'api-version': '1', // Use version 1 as default
       },
@@ -478,7 +541,7 @@ export class GearsetClient {
     // Initialize all three API clients
     this.automationClient = axios.create({
       baseURL: this.automationBaseURL,
-      ...commonConfig
+      ...commonConfig,
     });
 
     this.reportingClient = axios.create({
@@ -487,12 +550,12 @@ export class GearsetClient {
       headers: {
         ...commonConfig.headers,
         'api-version': '2', // Use version 2 for reporting API
-      }
+      },
     });
 
     this.auditClient = axios.create({
       baseURL: this.auditBaseURL,
-      ...commonConfig
+      ...commonConfig,
     });
 
     // Add response interceptor for error handling to all clients
@@ -506,7 +569,7 @@ export class GearsetClient {
       if (error.response?.status === 404) {
         throw new Error('Resource not found. Please check the job ID or endpoint.');
       }
-      
+
       // Re-throw with more context
       const message = (error.response?.data as GearsetErrorResponse)?.message || error.message;
       throw new Error(`Gearset API error (${error.response?.status || 'unknown'}): ${message}`);
@@ -514,7 +577,7 @@ export class GearsetClient {
 
     // Apply error interceptor to all clients
     [this.automationClient, this.reportingClient, this.auditClient].forEach(client => {
-      client.interceptors.response.use((response) => response, errorInterceptor);
+      client.interceptors.response.use(response => response, errorInterceptor);
     });
   }
 
@@ -535,7 +598,10 @@ export class GearsetClient {
   /**
    * Start a CI job run request
    */
-  async startCIJob(jobId: string, body?: ContinuousIntegrationRunRequestBody): Promise<ContinuousIntegrationRunRequest> {
+  async startCIJob(
+    jobId: string,
+    body?: ContinuousIntegrationRunRequestBody
+  ): Promise<ContinuousIntegrationRunRequest> {
     try {
       const response = await this.automationClient.post<ContinuousIntegrationRunRequest>(
         `/continuous-integration-jobs/${jobId}/run-requests`,
@@ -550,7 +616,10 @@ export class GearsetClient {
   /**
    * Get the status of a specific CI job run request
    */
-  async getCIJobRunStatus(jobId: string, runRequestId: string): Promise<ContinuousIntegrationRunStatus> {
+  async getCIJobRunStatus(
+    jobId: string,
+    runRequestId: string
+  ): Promise<ContinuousIntegrationRunStatus> {
     try {
       const response = await this.automationClient.get<ContinuousIntegrationRunStatus>(
         `/continuous-integration-jobs/${jobId}/run-requests/${runRequestId}`
@@ -566,9 +635,7 @@ export class GearsetClient {
    */
   async cancelCIJob(jobId: string): Promise<void> {
     try {
-      await this.automationClient.post(
-        `/continuous-integration-jobs/${jobId}/cancel`
-      );
+      await this.automationClient.post(`/continuous-integration-jobs/${jobId}/cancel`);
     } catch (error) {
       throw new Error(`Failed to cancel CI job: ${error}`);
     }
@@ -634,7 +701,10 @@ export class GearsetClient {
   /**
    * Create an external test run for a CI job run
    */
-  async createExternalTestRun(ciRunId: string, data: ExternalTestRunData): Promise<ExternalTestRunIds> {
+  async createExternalTestRun(
+    ciRunId: string,
+    data: ExternalTestRunData
+  ): Promise<ExternalTestRunIds> {
     try {
       const response = await this.automationClient.post<ExternalTestRunIds>(
         `/continuous-integration-runs/${ciRunId}/external-test-runs`,
@@ -649,7 +719,11 @@ export class GearsetClient {
   /**
    * Update an external test run for a CI job run
    */
-  async updateExternalTestRun(ciRunId: string, externalTestRunId: string, data: ExternalTestRunData): Promise<void> {
+  async updateExternalTestRun(
+    ciRunId: string,
+    externalTestRunId: string,
+    data: ExternalTestRunData
+  ): Promise<void> {
     try {
       await this.automationClient.put(
         `/continuous-integration-runs/${ciRunId}/external-test-runs/${externalTestRunId}`,
@@ -664,24 +738,29 @@ export class GearsetClient {
    * Backward compatibility method for getJobRunStatus
    * @deprecated Use getCIJobRunStatus instead
    */
-  async getJobRunStatus(jobId: string, runRequestId: string): Promise<ContinuousIntegrationRunStatus> {
+  async getJobRunStatus(
+    jobId: string,
+    runRequestId: string
+  ): Promise<ContinuousIntegrationRunStatus> {
     return this.getCIJobRunStatus(jobId, runRequestId);
   }
 
   /**
    * Start deployment frequency operation - returns operation ID for async processing
    */
-  async startDeploymentFrequencyOperation(query: DeploymentFrequencyQuery): Promise<OperationAcceptedResponse> {
+  async startDeploymentFrequencyOperation(
+    query: DeploymentFrequencyQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       if (query.PipelineId) {
         params.PipelineId = query.PipelineId;
       }
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         '/deployment-frequency',
         {},
@@ -696,19 +775,21 @@ export class GearsetClient {
   /**
    * Start deployment frequency aggregate operation - returns operation ID for async processing
    */
-  async startDeploymentFrequencyAggregateOperation(query: DeploymentFrequencyAggregateQuery): Promise<OperationAcceptedResponse> {
+  async startDeploymentFrequencyAggregateOperation(
+    query: DeploymentFrequencyAggregateQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number | string[]> = {
         StartDate: query.StartDate,
         EndDate: query.EndDate,
         Interval: query.Interval,
-        GroupBy: query.GroupBy
+        GroupBy: query.GroupBy,
       };
-      
+
       if (query.PipelineId) {
         params.PipelineId = query.PipelineId;
       }
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         '/deployment-frequency/aggregate',
         {},
@@ -723,17 +804,20 @@ export class GearsetClient {
   /**
    * Start lead time for changes operation - returns operation ID for async processing
    */
-  async startLeadTimeForChangesOperation(pipelineId: string, query: LeadTimeQuery): Promise<OperationAcceptedResponse> {
+  async startLeadTimeForChangesOperation(
+    pipelineId: string,
+    query: LeadTimeQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number | string[]> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       if (query.Exclude && query.Exclude.length > 0) {
         params.Exclude = query.Exclude;
       }
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/lead-time/${pipelineId}`,
         {},
@@ -748,14 +832,17 @@ export class GearsetClient {
   /**
    * Start lead time for changes aggregate operation - returns operation ID for async processing
    */
-  async startLeadTimeForChangesAggregateOperation(pipelineId: string, query: LeadTimeAggregateQuery): Promise<OperationAcceptedResponse> {
+  async startLeadTimeForChangesAggregateOperation(
+    pipelineId: string,
+    query: LeadTimeAggregateQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number | string[]> = {
         StartDate: query.StartDate,
         EndDate: query.EndDate,
-        Interval: query.Interval
+        Interval: query.Interval,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/lead-time/${pipelineId}/aggregate`,
         {},
@@ -770,13 +857,16 @@ export class GearsetClient {
   /**
    * Start change failure rate operation - returns operation ID for async processing
    */
-  async startChangeFailureRateOperation(environmentId: string, query: ChangeFailureRateQuery): Promise<OperationAcceptedResponse> {
+  async startChangeFailureRateOperation(
+    environmentId: string,
+    query: ChangeFailureRateQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/change-failure-rate/${environmentId}`,
         {},
@@ -791,14 +881,17 @@ export class GearsetClient {
   /**
    * Start change failure rate aggregate operation - returns operation ID for async processing
    */
-  async startChangeFailureRateAggregateOperation(environmentId: string, query: ChangeFailureRateAggregateQuery): Promise<OperationAcceptedResponse> {
+  async startChangeFailureRateAggregateOperation(
+    environmentId: string,
+    query: ChangeFailureRateAggregateQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
         EndDate: query.EndDate,
-        Interval: query.Interval
+        Interval: query.Interval,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/change-failure-rate/${environmentId}/aggregate`,
         {},
@@ -813,13 +906,16 @@ export class GearsetClient {
   /**
    * Start time to restore operation - returns operation ID for async processing
    */
-  async startTimeToRestoreOperation(environmentId: string, query: TimeToRestoreQuery): Promise<OperationAcceptedResponse> {
+  async startTimeToRestoreOperation(
+    environmentId: string,
+    query: TimeToRestoreQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/time-to-restore/${environmentId}`,
         {},
@@ -834,14 +930,17 @@ export class GearsetClient {
   /**
    * Start time to restore aggregate operation - returns operation ID for async processing
    */
-  async startTimeToRestoreAggregateOperation(environmentId: string, query: TimeToRestoreAggregateQuery): Promise<OperationAcceptedResponse> {
+  async startTimeToRestoreAggregateOperation(
+    environmentId: string,
+    query: TimeToRestoreAggregateQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
         EndDate: query.EndDate,
-        Interval: query.Interval
+        Interval: query.Interval,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/time-to-restore/${environmentId}/aggregate`,
         {},
@@ -857,13 +956,16 @@ export class GearsetClient {
    * Start CI job runs reporting operation - returns operation ID for async processing
    * This gets ALL runs for a specified job (manually triggered + automatic)
    */
-  async startCIJobRunsReportingOperation(jobId: string, query: CIJobRunsQuery): Promise<OperationAcceptedResponse> {
+  async startCIJobRunsReportingOperation(
+    jobId: string,
+    query: CIJobRunsQuery
+  ): Promise<OperationAcceptedResponse> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       const response = await this.reportingClient.post<OperationAcceptedResponse>(
         `/continuous-integration/job/${jobId}/runs`,
         {},
@@ -912,7 +1014,9 @@ export class GearsetClient {
       // This is a placeholder implementation
       // In reality, you might need to maintain a list of job IDs
       // or Gearset might provide a different endpoint
-      throw new Error('List CI jobs endpoint not yet implemented - please provide specific job IDs');
+      throw new Error(
+        'List CI jobs endpoint not yet implemented - please provide specific job IDs'
+      );
     } catch (error) {
       throw new Error(`Failed to list CI jobs: ${error}`);
     }
@@ -925,13 +1029,13 @@ export class GearsetClient {
     try {
       const params: Record<string, string | boolean | number | string[]> = {
         StartDate: query.StartDate, // Capital S as per API spec
-        EndDate: query.EndDate // Capital E as per API spec
+        EndDate: query.EndDate, // Capital E as per API spec
       };
-      
+
       if (query.OptionalParameters && query.OptionalParameters.length > 0) {
         params.OptionalParameters = query.OptionalParameters;
       }
-      
+
       const response = await this.auditClient.get<{ Deployments: DeploymentAuditEntry[] }>(
         '/deployments',
         { params }
@@ -945,13 +1049,16 @@ export class GearsetClient {
   /**
    * Get CI job runs audit data from the Audit API
    */
-  async getCIJobRunsAudit(jobId: string, query: CIJobRunsQuery): Promise<ContinuousIntegrationRunObject[]> {
+  async getCIJobRunsAudit(
+    jobId: string,
+    query: CIJobRunsQuery
+  ): Promise<ContinuousIntegrationRunObject[]> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       const response = await this.auditClient.get<ContinuousIntegrationJobsResponse>(
         `/continuous-integration/job/${jobId}/runs`,
         { params }
@@ -965,24 +1072,25 @@ export class GearsetClient {
   /**
    * Get anonymous Apex execution audit data from the Audit API
    */
-  async getAnonymousApexAudit(query: AnonymousApexQuery): Promise<AnonymousApexExecutionAuditResponseItem[]> {
+  async getAnonymousApexAudit(
+    query: AnonymousApexQuery
+  ): Promise<AnonymousApexExecutionAuditResponseItem[]> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       if (query.OrgUsername) {
         params.OrgUsername = query.OrgUsername;
       }
       if (query.Username) {
         params.Username = query.Username;
       }
-      
-      const response = await this.auditClient.get<{AnonymousApexExecutions: AnonymousApexExecutionAuditResponseItem[]}>(
-        '/anonymous-apex-execution',
-        { params }
-      );
+
+      const response = await this.auditClient.get<{
+        AnonymousApexExecutions: AnonymousApexExecutionAuditResponseItem[];
+      }>('/anonymous-apex-execution', { params });
       return response.data.AnonymousApexExecutions;
     } catch (error) {
       throw new Error(`Failed to get anonymous Apex audit data: ${error}`);
@@ -1007,7 +1115,7 @@ export class GearsetClient {
       const deployments = await this.getDeploymentAudit(query);
 
       // Transform deployment audit data into generic audit events
-      let events: AuditEvent[] = deployments.map((deployment) => ({
+      let events: AuditEvent[] = deployments.map(deployment => ({
         Id: deployment.DeploymentId,
         EventType: 'DEPLOYMENT',
         Timestamp: deployment.Date,
@@ -1032,7 +1140,7 @@ export class GearsetClient {
 
       // Apply resourceId filter if provided
       if (resourceId) {
-        events = events.filter((e) => e.ResourceId === resourceId);
+        events = events.filter(e => e.ResourceId === resourceId);
       }
 
       if (limit) {
@@ -1048,13 +1156,16 @@ export class GearsetClient {
   /**
    * Get pipeline edit history audit data from the Audit API
    */
-  async getPipelineEditHistory(pipelineId: string, query: CIJobRunsQuery): Promise<PipelineEditHistoryItem[]> {
+  async getPipelineEditHistory(
+    pipelineId: string,
+    query: CIJobRunsQuery
+  ): Promise<PipelineEditHistoryItem[]> {
     try {
       const params: Record<string, string | boolean | number> = {
         StartDate: query.StartDate,
-        EndDate: query.EndDate
+        EndDate: query.EndDate,
       };
-      
+
       const response = await this.auditClient.get<{ History: PipelineEditHistoryItem[] }>(
         `/pipeline/${pipelineId}/edit-history`,
         { params }
@@ -1073,7 +1184,7 @@ export class GearsetClient {
       // Try to access a simple endpoint to verify authentication
       // This might need to be adjusted based on available endpoints
       const response = await this.automationClient.get('/health', {
-        timeout: 5000
+        timeout: 5000,
       });
       return response.status === 200;
     } catch (error) {

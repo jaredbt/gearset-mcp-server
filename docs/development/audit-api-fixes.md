@@ -7,17 +7,19 @@ Applied comprehensive fixes to align the gearset-mcp-server with the official Ge
 ## Key Correction Made
 
 ### CI Job Runs Endpoint Usage
+
 - **Problem Identified**: Initially misunderstood the distinction between:
   - **Reporting API v2**: `/public/reporting/continuous-integration/job/{jobId}/runs` - Gets **ALL** CI job runs (async operation)
   - **Audit API v1**: `/public/audit/continuous-integration/job/{jobId}/runs` - Gets **manually triggered runs only** (subset, direct response)
 
-- **Correction Applied**: 
+- **Correction Applied**:
   - Kept `get_ci_job_runs_audit` tool using **Reporting API v2** async pattern (correct for getting ALL runs)
   - Added new `get_manual_ci_job_runs` tool using **Audit API v1** for manually triggered runs only
 
 ## Issues Identified and Fixed
 
 ### 1. Type Alignment Issues
+
 - **Problem**: `DeploymentAudit` interface didn't match the spec's `DeploymentAuditEntry`
 - **Solution**: Replaced with spec-aligned `DeploymentAuditEntry` interface including:
   - Correct field names (`Date` instead of `DeploymentStartTime`, `Owner` instead of `UserId`, etc.)
@@ -26,6 +28,7 @@ Applied comprehensive fixes to align the gearset-mcp-server with the official Ge
   - Optional fields for work items and Apex executions
 
 ### 2. Audit Events Transformation Issues
+
 - **Problem**: `getAuditEvents` used non-existent fields from old interface
 - **Solution**: Updated transformation to use actual spec fields:
   - `deployment.Date` (not `DeploymentStartTime`)
@@ -34,29 +37,34 @@ Applied comprehensive fixes to align the gearset-mcp-server with the official Ge
   - Count deployment differences properly
 
 ### 3. Missing resourceId Filtering
+
 - **Problem**: `getAuditEvents` ignored the `resourceId` parameter
 - **Solution**: Added filtering logic to match events by ResourceId
 
 ### 4. Date Validation
+
 - **Problem**: No validation of ISO 8601 date strings in tool schemas
 - **Solution**: Added Zod refinements to validate date strings for:
   - `GetDeploymentAuditSchema`
-  - `GetCIJobRunsAuditSchema` 
+  - `GetCIJobRunsAuditSchema`
   - `GetAnonymousApexAuditSchema`
   - `GetPipelineEditHistorySchema`
   - `GetManualCIJobRunsSchema`
 
 ### 5. Interface Consistency
+
 - **Problem**: `AuditEvent` interface required `UserId` and `UserEmail` but deployment audit doesn't provide these
 - **Solution**: Made `UserId` and `UserEmail` optional in `AuditEvent` interface
 
 ## Tools Available
 
 ### CI Job Runs Data
+
 - **`get_ci_job_runs_audit`**: Gets **ALL** CI job runs via Reporting API v2 (async operation)
 - **`get_manual_ci_job_runs`**: Gets **manually triggered runs only** via Audit API v1 (direct response)
 
 ### Other Audit Tools
+
 - **`get_deployment_audit`**: Deployment audit data from Audit API v1
 - **`get_anonymous_apex_audit`**: Anonymous Apex execution audit from Audit API v1
 - **`get_pipeline_edit_history`**: Pipeline edit history from Audit API v1
@@ -65,7 +73,9 @@ Applied comprehensive fixes to align the gearset-mcp-server with the official Ge
 ## New Features Added
 
 ### Additional Audit API Interface Support
+
 Added missing interfaces referenced by the spec:
+
 - `DeploymentDifferenceResponse`
 - `JiraTicketReferenceResponseEntry`
 - `AsanaTaskResponseEntry`
@@ -73,6 +83,7 @@ Added missing interfaces referenced by the spec:
 - `AnonymousApexExecutionAuditResponseItem`
 
 ### New Tools
+
 1. **Pipeline Edit History**: `get_pipeline_edit_history`
    - **Parameters**: `pipelineId`, `StartDate`, `EndDate`
    - **Client Method**: `getPipelineEditHistory(pipelineId, query)`
@@ -84,12 +95,14 @@ Added missing interfaces referenced by the spec:
 ## API Usage Clarification
 
 ### Reporting API v2 (Async Operations)
+
 - **Endpoint**: `POST /public/reporting/continuous-integration/job/{jobId}/runs`
 - **Purpose**: Get **all** CI job runs for a specified job
 - **Pattern**: Async operation (start → check status → get results)
 - **Response**: `PublicApiContinuousIntegrationJobsResponse` with complete run data
 
-### Audit API v1 (Direct Responses)  
+### Audit API v1 (Direct Responses)
+
 - **Endpoint**: `GET /public/audit/continuous-integration/job/{jobId}/runs`
 - **Purpose**: Get **manually triggered runs only** (user pressed "play" button)
 - **Pattern**: Direct response
@@ -125,11 +138,13 @@ Added missing interfaces referenced by the spec:
 All changes ensure 100% compliance with both API specifications:
 
 ### Reporting API v2 Compliance
+
 - Correct async operation pattern for all runs data
 - Proper parameter names and casing
 - Authorization header format compliance
 
-### Audit API v1 Compliance  
+### Audit API v1 Compliance
+
 - Correct parameter names and casing (StartDate/EndDate)
 - Proper date format validation
 - Accurate response type mapping

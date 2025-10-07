@@ -21,17 +21,20 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 1. Fork the repository on GitHub
 2. Clone your fork locally:
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/gearset-mcp-server.git
    cd gearset-mcp-server
    ```
 
 3. Install dependencies:
+
    ```bash
    npm install
    ```
 
 4. Build the project:
+
    ```bash
    npm run build
    ```
@@ -64,6 +67,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 ### Submitting Changes
 
 1. Create a feature branch from `main`:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -75,6 +79,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
    - Update documentation as needed
 
 3. Test your changes:
+
    ```bash
    npm run build
    npm test
@@ -82,6 +87,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
    ```
 
 4. Commit your changes with clear, descriptive messages:
+
    ```bash
    git commit -m "feat: add support for Gearset deployment monitoring"
    ```
@@ -94,7 +100,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 ### Pull Request Guidelines
 
 - **Title**: Use conventional commit format (`feat:`, `fix:`, `docs:`, etc.)
-- **Description**: 
+- **Description**:
   - Explain what changes you made and why
   - Reference any related issues (#123)
   - Include screenshots for UI changes
@@ -105,24 +111,28 @@ By participating in this project, you agree to maintain a respectful and inclusi
 ## Coding Standards
 
 ### TypeScript
+
 - Use strict TypeScript configuration
 - Prefer interfaces over types where appropriate
 - Use proper error handling with typed exceptions
 - Follow established patterns in the codebase
 
 ### API Design
+
 - Follow MCP protocol specifications
 - Use Zod schemas for input validation
 - Provide clear error messages
 - Respect Gearset API rate limits
 
 ### Testing
+
 - Write tests for all new functionality
 - Use descriptive test names
 - Mock external API calls appropriately
 - Aim for good test coverage
 
 ### Documentation
+
 - Update README.md for user-facing changes
 - Add JSDoc comments for complex functions
 - Update CHANGELOG.md following Keep a Changelog format
@@ -145,6 +155,7 @@ This project maintains high code quality standards:
 - **Modern Tooling**: Uses ESLint v9 flat config and modern Jest configuration
 
 Before submitting a PR, ensure:
+
 ```bash
 npm run lint    # Should show zero warnings
 npm test        # All tests must pass
@@ -165,6 +176,7 @@ npm run build   # Must compile without errors
 ## Questions?
 
 If you have questions about contributing, feel free to:
+
 - Open a GitHub Discussion
 - Create an issue with the "question" label
 - Reach out to the maintainers

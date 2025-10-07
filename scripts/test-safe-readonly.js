@@ -23,12 +23,12 @@ console.log('⚠️  This test will ONLY check authentication - no changes will 
 const serverPath = path.join(__dirname, '../dist', 'index.js');
 const server = spawn('node', [serverPath], {
   env: process.env,
-  stdio: ['pipe', 'pipe', 'pipe']
+  stdio: ['pipe', 'pipe', 'pipe'],
 });
 
 let responses = [];
 
-server.stdout.on('data', (data) => {
+server.stdout.on('data', data => {
   const output = data.toString().trim();
   if (output) {
     try {
@@ -41,7 +41,7 @@ server.stdout.on('data', (data) => {
   }
 });
 
-server.stderr.on('data', (data) => {
+server.stderr.on('data', data => {
   console.log('🖥️  Server:', data.toString().trim());
 });
 
@@ -52,7 +52,7 @@ setTimeout(() => {
     jsonrpc: '2.0',
     id: 1,
     method: 'tools/list',
-    params: {}
+    params: {},
   };
   server.stdin.write(JSON.stringify(listToolsMessage) + '\n');
 }, 500);
@@ -67,11 +67,11 @@ setTimeout(() => {
     params: {
       name: 'get_ci_job_status',
       arguments: {
-        jobId: 'test-fake-nonexistent-job-id-999999'
-      }
-    }
+        jobId: 'test-fake-nonexistent-job-id-999999',
+      },
+    },
   };
-  
+
   server.stdin.write(JSON.stringify(testMessage) + '\n');
 }, 2000);
 
@@ -81,28 +81,36 @@ setTimeout(() => {
   server.kill();
 }, 4000);
 
-server.on('close', (code) => {
+server.on('close', code => {
   console.log(`\n📊 Test Results:`);
   console.log(`Exit code: ${code}`);
-  
+
   if (responses.length > 0) {
     console.log('✅ Server communication working');
-    
+
     // Check for tools list response
     const toolsResponse = responses.find(r => r.result && r.result.tools);
     if (toolsResponse) {
       console.log('✅ MCP tools properly exposed:', toolsResponse.result.tools.length, 'tools');
     }
-    
+
     // Check for API authentication test
     const apiResponse = responses.find(r => r.error || (r.result && typeof r.result === 'object'));
     if (apiResponse) {
       if (apiResponse.error) {
         const errorMsg = apiResponse.error.message || '';
-        if (errorMsg.includes('404') || errorMsg.includes('not found') || errorMsg.includes('Resource not found')) {
+        if (
+          errorMsg.includes('404') ||
+          errorMsg.includes('not found') ||
+          errorMsg.includes('Resource not found')
+        ) {
           console.log('✅ Authentication SUCCESS: Got expected 404 for fake job ID');
           console.log('✅ This confirms your Gearset API token is valid and working');
-        } else if (errorMsg.includes('401') || errorMsg.includes('Invalid') || errorMsg.includes('token')) {
+        } else if (
+          errorMsg.includes('401') ||
+          errorMsg.includes('Invalid') ||
+          errorMsg.includes('token')
+        ) {
           console.log('❌ Authentication FAILED: Invalid API token');
         } else if (errorMsg.includes('429') || errorMsg.includes('rate limit')) {
           console.log('⚠️  Rate limit encountered - but authentication is working');
@@ -116,10 +124,10 @@ server.on('close', (code) => {
   } else {
     console.log('❌ No responses received');
   }
-  
+
   console.log('\n🔒 SAFE TEST COMPLETE - No changes were made to your production Gearset instance');
 });
 
-server.on('error', (err) => {
+server.on('error', err => {
   console.error('❌ Server error:', err);
 });

@@ -18,7 +18,7 @@ describe('GearsetClient', () => {
 
   describe('API methods', () => {
     let client: GearsetClient;
-    
+
     beforeEach(() => {
       client = new GearsetClient('test-token');
     });

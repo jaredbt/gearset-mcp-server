@@ -6,11 +6,11 @@
 
 We currently support the following versions with security updates:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.1.x   | ✅ |
-| 1.0.x   | ✅ |
-| 0.1.x   | ❌ |
+| Version | Supported |
+| ------- | --------- |
+| 1.1.x   | ✅        |
+| 1.0.x   | ✅        |
+| 0.1.x   | ❌        |
 
 ## Reporting a Vulnerability
 
@@ -23,7 +23,7 @@ We take the security of this community MCP server seriously. If you discover a s
 Instead, please:
 
 1. **Email**: Send details to jared@apollo.io with the subject "Security Vulnerability - Gearset MCP Server"
-2. **Include**: 
+2. **Include**:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact
@@ -60,6 +60,7 @@ Instead, please:
 ## Best Practices for Users
 
 ### Environment Variables
+
 ```bash
 # Good
 export GEARSET_API_TOKEN="your_secure_token"
@@ -69,6 +70,7 @@ git commit -m "Added API token: abc123..."
 ```
 
 ### MCP Configuration
+
 ```json
 {
   "mcpServers": {
@@ -84,6 +86,7 @@ git commit -m "Added API token: abc123..."
 ```
 
 ### Network Access
+
 - Run in trusted environments only
 - Consider firewall rules for production deployments
 - Monitor API usage in Gearset dashboard
@@ -93,7 +96,7 @@ git commit -m "Added API token: abc123..."
 1. **Private Report**: Vulnerability reported privately
 2. **Assessment**: We assess impact and severity
 3. **Fix Development**: Develop and test fix
-4. **Coordinated Disclosure**: 
+4. **Coordinated Disclosure**:
    - Security advisory published
    - Fix released
    - Public disclosure (if appropriate)
